@@ -1,0 +1,32 @@
+{
+    "name": "mobilerider/mobilerider-php-bootstrap",
+    "type": "library",
+    "description": "Base classes and functions for MobileRider source code",
+    "version": "0.0.1-alpha.0",
+    "keywords": ["mobilerider"],
+    "homepage": "http://www.mobilerider.com/",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michel Perez",
+            "email": "michel@mobilerider.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Mr\\Bootstrap\\": "src/",
+            "Mr\\BootstrapTests\\": "tests/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Akamai\\AnalyticsTest\\": "tests/"
+        }
+    },
+    "require": {
+        "php": ">=7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.2"
+    }
+}
