@@ -21,6 +21,13 @@ if (! function_exists('str2bool')) {
     }
 }
 
+if (! function_exists('srvArg')) {
+    function srvArg($name)
+    {
+        return new \Mr\Bootstrap\ContainerServiceArg($name);
+    }
+}
+
 if (! function_exists('xml2arr')) {
     /**
      * @param string $stream XML

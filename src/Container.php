@@ -16,6 +16,13 @@ class Container
         $this->services['container'] = $this;
     }
 
+    /**
+     * Return service instance if exists or creates it otherwise
+     *
+     * @param $name
+     * @param array $args
+     * @return mixed|object
+     */
     public function get($name, $args = [])
     {
         if (!isset($this->services[$name])) {
@@ -33,6 +40,13 @@ class Container
         return $this->services[$name];
     }
 
+    /**
+     * Create service instance with given arguments
+     *
+     * @param array $definition
+     * @param array $args
+     * @return object
+     */
     protected function create(array $definition, array $args)
     {
         $arguments = [];
@@ -43,8 +57,8 @@ class Container
                 continue;
             }
 
-            if (is_string($argument)) {
-                $arguments[] = $this->get($argument);
+            if ($argument instanceof ContainerServiceArg) {
+                $arguments[] = $this->get($argument->name);
                 continue;
             }
 
