@@ -9,6 +9,9 @@ use Mr\Bootstrap\Repository\BaseRepository;
 use Mr\Bootstrap\Traits\ContainerAccessor;
 use Mr\Bootstrap\Traits\GetSet;
 
+/**
+ * @property mixed|null id
+ */
 abstract class BaseModel implements ContainerAccessorInterface, DataEntityInterface
 {
     use GetSet {
@@ -23,7 +26,7 @@ abstract class BaseModel implements ContainerAccessorInterface, DataEntityInterf
     public function __construct(BaseRepository $repository, array $data = [])
     {
         $this->repository = $repository;
-        $this->fill($data);
+        $this->fill($data, true);
     }
 
     public abstract static function getModel();
@@ -62,16 +65,12 @@ abstract class BaseModel implements ContainerAccessorInterface, DataEntityInterf
 
     public function getUri()
     {
-        $this->ensureNotNew();
-
-        $resource = static::getResource();
-
-        return "{$resource}/{$this->id}";
+        return $this->repository->buildUri(static::getResource(), $this->id);
     }
 
-    public function fill(array $data)
+    public function fill(array $data, $clear = false)
     {
-        $this->traitFill($data);
+        $this->traitFill($data, $clear);
     }
 
     /**

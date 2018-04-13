@@ -181,9 +181,14 @@ trait GetSet
         return $this->toArray();
     }
 
-    public function fill(array $data)
+    public function fill(array $data, $clear = false)
     {
         if (! $data) {
+            return;
+        }
+
+        if ($clear) {
+            $this->data = $data;
             return;
         }
 

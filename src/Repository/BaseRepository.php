@@ -2,8 +2,7 @@
 
 namespace Mr\Bootstrap\Repository;
 
-use Mr\Bootstrap\Interfaces\HttpClientInterface;
-use Mr\Bootstrap\Container;
+use Mr\Bootstrap\Interfaces\HttpDataClientInterface;
 use Mr\Bootstrap\Interfaces\ContainerAccessorInterface;
 use Mr\Bootstrap\Model\BaseModel;
 use Mr\Bootstrap\Traits\ContainerAccessor;
@@ -13,14 +12,19 @@ abstract class BaseRepository implements ContainerAccessorInterface
     use ContainerAccessor;
 
     protected $client;
+    protected $baseUrl;
+    protected $apiVersion;
 
-    public function __construct(HttpClientInterface $client, array $options = [])
+    public function __construct(HttpDataClientInterface $client, array $options = [])
     {
         $this->client = $client;
-        $this->baseUrl = $options['base_url'] ?? $this->getBaseUrl();
+        $this->baseUrl = $options['base_url'] ?? '';
+        $this->apiVersion = $options['api_version'] ?? '';
     }
 
-    public abstract function getBaseUrl();
+    /**
+     * @return mixed
+     */
     public abstract function getModelClass();
 
     public function getModel()
@@ -37,14 +41,32 @@ abstract class BaseRepository implements ContainerAccessorInterface
         return $model::getResource();
     }
 
-    protected function buildUri($uri)
+    public function getResourcePath()
     {
-        return "{$this->baseUrl}/$uri";
+        $path = static::getResource();
+
+        if ($this->apiVersion) {
+            $path .= '/' . $this->apiVersion;
+        }
+
+        return $path;
     }
 
-    public function getUri()
+    public function buildUri($resource, $id = null)
     {
-        return $this->buildUri($this->getResource() . 's');
+        $parts = [
+            $this->baseUrl,
+            $this->getResourcePath(),
+            plural($resource),
+            $id
+        ];
+
+        return implode('/', array_filter($parts, 'strlen'));
+    }
+
+    public function getUri($id = null)
+    {
+        return $this->buildUri($this->getResource(), $id);
     }
 
     public function parseOne(array $data)
@@ -88,7 +110,7 @@ abstract class BaseRepository implements ContainerAccessorInterface
 
     public function getData($id, $modifiers = [])
     {
-        return $this->client->getData($this->getUri() . '/' . $id, $modifiers);
+        return $this->client->getData($this->getUri($id), $modifiers);
     }
 
     public function get($id)
@@ -127,28 +149,19 @@ abstract class BaseRepository implements ContainerAccessorInterface
     public function persist(BaseModel $model)
     {
         if ($model->isNew()) {
-            $data = $this->client->postData(
-                $this->getUri(), [
-                    $this->getResource() => $model->toArray()
-                ]
-            );
+            $data = $this->client->postData($this->getUri(), $model->toArray());
         } else {
-            $data = $this->client->putData($this->buildUri($model->getUri()));
+            $data = $this->client->putData($model->getUri(), $model->toArray());
         }
 
-        // TODO: maybe we should clear all data
-        $model->fill($data);
-    }
 
-    public function encode(BaseModel $model, $pretty = false)
-    {
-        return $this->client->encode([$this->getResource() => $model->toArray()], $pretty);
+        $model->fill($data, true);
     }
 
     public function delete(BaseModel $model)
     {
         if (!$model->isNew()) {
-            $this->client->delete($this->buildUri($model->getUri()));
+            $this->client->delete($model->getUri());
         }
     }
 }
