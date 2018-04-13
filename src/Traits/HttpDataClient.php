@@ -4,7 +4,7 @@ namespace Mr\Bootstrap\Traits;
 
 use AwsElemental\Sdk\Interfaces\DataTransformerInterface;
 
-class HttpDataClient
+trait HttpDataClient
 {
     /**
      * @var DataTransformerInterface
