@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8874c2e8a8ba15c23ba05f813aa9b896",
+    "content-hash": "84f0a7d3fc8571abd291255a2ea305b9",
     "packages": [
         {
             "name": "rappasoft/laravel-helpers",
