@@ -3,6 +3,14 @@
 if (! function_exists('plural')) {
     function plural($s)
     {
+        if (! $s) {
+            return '';
+        }
+
+        if (ends_with($s, 'y')) {
+            return substr($s, 0, -1) . 'ies';
+        }
+
         return $s . 's';
     }
 }
