@@ -20,8 +20,17 @@ trait HttpDataClient
     {
         $response = $this->{'request'}($method, $uri, $options);
 
-        // Once you read contents from the response is gone (stream)
-        return $this->transformer->toArray($response->getBody()->getContents());
+        if ($response->getStatusCode() != 200) {
+            throw new \RuntimeException('Request failed: ' . $response->getReasonPhrase());
+        }
+
+        $contents = $response->getBody()->getContents();
+
+        if (! $contents) {
+            return [];
+        }
+
+        return $this->transformer ? $this->transformer->toArray($contents) : $contents;
     }
 
     public function getData($uri, array $params = [], array $options = [])
