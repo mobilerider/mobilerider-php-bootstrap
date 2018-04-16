@@ -133,7 +133,7 @@ if (! function_exists('dd')) {
 }
 
 if (! function_exists('da')) {
-    function da(\AwsElemental\Sdk\Interfaces\DataEntityInterface $obj)
+    function da(\Mr\Bootstrap\Interfaces\DataEntityInterface $obj)
     {
         dd($obj->toArray());
     }

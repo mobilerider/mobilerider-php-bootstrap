@@ -2,7 +2,7 @@
 
 namespace Mr\Bootstrap\Traits;
 
-use AwsElemental\Sdk\Interfaces\DataTransformerInterface;
+use Mr\Bootstrap\Interfaces\DataTransformerInterface;
 
 trait HttpDataClient
 {

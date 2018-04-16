@@ -3,7 +3,7 @@
 namespace Mr\Bootstrap\Interfaces;
 
 
-use AwsElemental\Sdk\Interfaces\DataTransformerInterface;
+use Mr\Bootstrap\Interfaces\DataTransformerInterface;
 
 interface HttpDataClientInterface
 {

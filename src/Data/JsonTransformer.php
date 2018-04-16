@@ -4,7 +4,7 @@ namespace Mr\Bootstrap\Data;
 
 
 
-use AwsElemental\Sdk\Interfaces\DataTransformerInterface;
+use Mr\Bootstrap\Interfaces\DataTransformerInterface;
 
 class Json implements DataTransformerInterface
 {

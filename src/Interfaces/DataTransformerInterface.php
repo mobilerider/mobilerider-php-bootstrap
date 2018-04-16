@@ -1,6 +1,6 @@
 <?php
 
-namespace AwsElemental\Sdk\Interfaces;
+namespace Mr\Bootstrap\Interfaces;
 
 
 interface DataTransformerInterface
