@@ -6,7 +6,7 @@ namespace Mr\Bootstrap\Data;
 
 use Mr\Bootstrap\Interfaces\DataTransformerInterface;
 
-class Json implements DataTransformerInterface
+class JsonTransformer implements DataTransformerInterface
 {
     public function transform(array $data, $pretty = false)
     {
