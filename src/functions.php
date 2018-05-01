@@ -1,5 +1,16 @@
 <?php
 
+if (! function_exists('logger')) {
+    /**
+     * Return unique instance of Logger
+     * @return \Mr\Bootstrap\Utils\Logger
+     */
+    function logger()
+    {
+        return \Mr\Bootstrap\Utils\Logger::getInstance();
+    }
+}
+
 if (! function_exists('plural')) {
     function plural($s)
     {
