@@ -49,20 +49,24 @@ class Container
      */
     protected function create(array $definition, array $args)
     {
-        $arguments = [];
+        if (isset($definition['arguments'])) {
+            $arguments = [];
 
-        foreach ($definition['arguments'] as $key => $argument) {
-            if (array_key_exists($key, $args)) {
-                $arguments[] = $args[$key];
-                continue;
+            foreach ($definition['arguments'] as $key => $argument) {
+                if (array_key_exists($key, $args)) {
+                    $arguments[] = $args[$key];
+                    continue;
+                }
+
+                if ($argument instanceof ContainerServiceArg) {
+                    $arguments[] = $this->get($argument->name);
+                    continue;
+                }
+
+                $arguments[] = $argument;
             }
-
-            if ($argument instanceof ContainerServiceArg) {
-                $arguments[] = $this->get($argument->name);
-                continue;
-            }
-
-            $arguments[] = $argument;
+        } else {
+            $arguments = $args;
         }
 
         $service = Factory::create($definition['class'], $arguments);
