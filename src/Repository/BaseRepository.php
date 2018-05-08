@@ -116,7 +116,7 @@ abstract class BaseRepository implements ContainerAccessorInterface
     {
         $models = [];
 
-        $data = $this->parseAll($data);
+        $data = $this->parseMany($data);
 
         foreach ($data as $item) {
             $models[] = $this->create($item);
