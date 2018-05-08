@@ -12,13 +12,11 @@ abstract class BaseRepository implements ContainerAccessorInterface
     use ContainerAccessor;
 
     protected $client;
-    protected $baseUrl;
     protected $apiVersion;
 
     public function __construct(HttpDataClientInterface $client, array $options = [])
     {
         $this->client = $client;
-        $this->baseUrl = $options['base_url'] ?? '';
         $this->apiVersion = $options['api_version'] ?? '';
     }
 
@@ -51,7 +49,6 @@ abstract class BaseRepository implements ContainerAccessorInterface
     public function getUri($id = null)
     {
         $parts = [
-            $this->baseUrl,
             $this->getResourcePath(),
             $id
         ];
