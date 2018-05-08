@@ -41,32 +41,22 @@ abstract class BaseRepository implements ContainerAccessorInterface
         return $model::getResource();
     }
 
-    public function getResourcePath()
+    protected function getResourcePath()
     {
-        $path = static::getResource();
+        $path = plural($this->getResource());
 
-        if ($this->apiVersion) {
-            $path .= '/' . $this->apiVersion;
-        }
-
-        return $path;
-    }
-
-    public function buildUri($resource, $id = null)
-    {
-        $parts = [
-            $this->baseUrl,
-            $this->getResourcePath(),
-            plural($resource),
-            $id
-        ];
-
-        return implode('/', array_filter($parts, 'strlen'));
+        return $this->apiVersion ? $this->apiVersion . '/' . $path : $path;
     }
 
     public function getUri($id = null)
     {
-        return $this->buildUri($this->getResource(), $id);
+        $parts = [
+            $this->baseUrl,
+            $this->getResourcePath(),
+            $id
+        ];
+
+        return implode('/', array_filter($parts, 'strlen'));
     }
 
     public function parseOne(array $data)

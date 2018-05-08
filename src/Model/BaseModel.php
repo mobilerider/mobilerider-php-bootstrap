@@ -65,7 +65,7 @@ abstract class BaseModel implements ContainerAccessorInterface, DataEntityInterf
 
     public function getUri()
     {
-        return $this->repository->buildUri(static::getResource(), $this->id);
+        return $this->repository->getUri($this->id);
     }
 
     public function fill(array $data, $clear = false)
