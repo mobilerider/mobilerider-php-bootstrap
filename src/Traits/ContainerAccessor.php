@@ -11,6 +11,11 @@ trait ContainerAccessor
      */
     protected $container;
 
+    protected function _has($name)
+    {
+        return $this->container->has($name);
+    }
+
     protected function _get($name, array $args = [])
     {
         return $this->container->get($name, $args);

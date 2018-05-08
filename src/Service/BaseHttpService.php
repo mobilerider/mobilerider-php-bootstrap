@@ -5,6 +5,7 @@ namespace Mr\Bootstrap\Service;
 
 use Mr\Bootstrap\Interfaces\ContainerAccessorInterface;
 use Mr\Bootstrap\Interfaces\HttpDataClientInterface;
+use Mr\Bootstrap\Repository\BaseRepository;
 use Mr\Bootstrap\Traits\ContainerAccessor;
 
 abstract class BaseHttpService implements ContainerAccessorInterface
@@ -16,6 +17,7 @@ abstract class BaseHttpService implements ContainerAccessorInterface
      */
     protected $client;
     protected $options;
+    protected $version;
 
     /**
      * Service constructor.
@@ -26,6 +28,7 @@ abstract class BaseHttpService implements ContainerAccessorInterface
     {
         $this->client = $client;
         $this->options = $options;
+        $this->version = $options['version'] ?? '';
     }
 
     /**
@@ -34,5 +37,20 @@ abstract class BaseHttpService implements ContainerAccessorInterface
     public function getClient()
     {
         return $this->client;
+    }
+
+    /**
+     * Returns repository related with given name, usually repository class
+     *
+     * @param $name
+     * @return BaseRepository
+     */
+    public function getRepository($name)
+    {
+        return $this->_get($name, $this->_has($name) ? null : [
+            $this->client, [
+                'api_version' => $this->version
+            ]
+        ]);
     }
 }

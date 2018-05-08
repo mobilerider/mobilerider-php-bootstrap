@@ -17,6 +17,17 @@ class Container
     }
 
     /**
+     * Return TRUE if service instance already exists
+     *
+     * @param $name
+     * @return bool
+     */
+    public function has($name)
+    {
+        return isset($this->services[$name]);
+    }
+
+    /**
      * Return service instance if exists or creates it otherwise
      *
      * @param $name
@@ -25,7 +36,7 @@ class Container
      */
     public function get($name, $args = [])
     {
-        if (!isset($this->services[$name])) {
+        if (! $this->has($name)) {
             $definition = $this->definitions[$name];
 
             if (isset($definition['instance'])) {
