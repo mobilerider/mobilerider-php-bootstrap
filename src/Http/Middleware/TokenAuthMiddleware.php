@@ -1,13 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: michel
- * Date: 9/5/17
- * Time: 10:59 AM
- */
 
-namespace Mr\Sdk\Http\Middleware;
+namespace Mr\Bootstrap\Http\Middleware;
 
+use GuzzleHttp\Promise\Promise;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
