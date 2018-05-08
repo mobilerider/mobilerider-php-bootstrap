@@ -28,9 +28,15 @@ class Container
         if (!isset($this->services[$name])) {
             $definition = $this->definitions[$name];
 
-            $service = $this->create($definition, $args);
+            if (isset($definition['instance'])) {
+                $service = $definition['instance'];
+                $single = true;
+            } else {
+                $service = $this->create($definition, $args);
+                $single = isset($definition['single']) && (bool) $definition['single'];
+            }
 
-            if ($definition['single']) {
+            if ($single) {
                 $this->services[$name] = $service;
             }
 
