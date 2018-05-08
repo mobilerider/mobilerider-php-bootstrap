@@ -3,8 +3,6 @@
 namespace Mr\Bootstrap\Interfaces;
 
 
-use Mr\Bootstrap\Interfaces\DataTransformerInterface;
-
 interface HttpDataClientInterface
 {
     public function setDataTransformer(DataTransformerInterface $transformer);
