@@ -64,7 +64,7 @@ abstract class BaseRepository implements ContainerAccessorInterface
         return $data[$this->getResource()];
     }
 
-    public function parseAll(array $data)
+    public function parseMany(array $data)
     {
         $data = $data[$this->getResource()];
 
