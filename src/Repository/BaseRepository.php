@@ -53,18 +53,20 @@ abstract class BaseRepository implements ContainerAccessorInterface
 
     public function parseOne(array $data)
     {
-        return $data[$this->getResource()];
+        if (! isset($data['data'])) {
+            return null;
+        }
+
+        return $data['data'];
     }
 
     public function parseMany(array $data)
     {
-        $data = $data[$this->getResource()];
-
-        if (!is_numeric(key($data))) {
-            return [$data];
+        if (! isset($data['data'])) {
+            return [];
         }
 
-        return $data;
+        return $data['data'];
     }
 
     public function create($data = [])
@@ -87,45 +89,38 @@ abstract class BaseRepository implements ContainerAccessorInterface
 
     public function execute($uri, array $data = [])
     {
-        return $this->client->postData($this->getUri() . '/' . $uri, $data);
-    }
-
-    public function getData($id, $modifiers = [])
-    {
-        return $this->client->getData($this->getUri($id), $modifiers);
-    }
-
-    public function get($id)
-    {
-        return $this->create($this->getData($id));
+        return $this->client->postData($uri, $data);
     }
 
     /**
-     * @param array $data
+     * @param array $items
      * @return array
      */
-    public function buildModels(array $data)
+    public function buildModels(array $items)
     {
         $models = [];
 
-        $data = $this->parseMany($data);
-
-        foreach ($data as $item) {
+        foreach ($items as $item) {
             $models[] = $this->create($item);
         }
 
         return $models;
     }
 
+    public function get($id, $modifiers = [])
+    {
+        $data = $this->client->getData($this->getUri($id), $modifiers);
+        $data = $this->parseOne($data);
+
+        return $data ? $this->create($data) : $data;
+    }
+
     public function all($filters = [])
     {
         $data = $this->client->getData($this->getUri(), $filters);
+        $data = $this->parseMany($data);
 
-        if (isset($data['empty'])) {
-            return [];
-        }
-
-        return $this->buildModels($data);
+        return $data ? $this->buildModels($data) : $data;
     }
 
     public function persist(BaseModel $model)
