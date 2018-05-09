@@ -29,12 +29,7 @@ abstract class BaseModel implements ContainerAccessorInterface, DataEntityInterf
         $this->fill($data, true);
     }
 
-    public abstract static function getModel();
-
-    public static function getResource()
-    {
-        return static::getModel();
-    }
+    public abstract function getResource();
 
     public function isNew()
     {

@@ -25,13 +25,6 @@ abstract class BaseRepository implements ContainerAccessorInterface
      */
     public abstract function getModelClass();
 
-    public function getModel()
-    {
-        $model = static::getModelClass();
-
-        return $model::getModel();
-    }
-
     public function getResource()
     {
         $model = static::getModelClass();
@@ -71,7 +64,7 @@ abstract class BaseRepository implements ContainerAccessorInterface
 
     public function create($data = [])
     {
-        return $this->_get($this->getModel(), [
+        return $this->_get($this->getModelClass(), [
             'repository' => $this, // Important to pass current repository and avoid container creating new one
             'data' => $data
         ]);
