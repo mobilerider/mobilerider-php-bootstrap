@@ -29,7 +29,10 @@ abstract class BaseModel implements ContainerAccessorInterface, DataEntityInterf
         $this->fill($data, true);
     }
 
-    public abstract function getResource();
+    public static function getResource()
+    {
+        throw new \RuntimeException('Not implemented. Must be implemented on child.');
+    }
 
     public function isNew()
     {
