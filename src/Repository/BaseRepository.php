@@ -136,9 +136,10 @@ abstract class BaseRepository implements ContainerAccessorInterface
         if ($model->isNew()) {
             $data = $this->client->postData($this->getUri(), $model->toArray());
         } else {
-            $data = $this->client->putData($model->getUri(), $model->toArray());
+            $data = $this->client->putData($this->getUri($model->id), $model->toArray());
         }
 
+        $data = $this->parseOne($data);
 
         $model->fill($data, true);
     }
