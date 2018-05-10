@@ -44,8 +44,12 @@ abstract class BaseRepository implements ContainerAccessorInterface
         return $id ? "{$this->getResourcePath()}/$id" : $this->getResourcePath();
     }
 
-    public function parseOne(array $data)
+    public function parseOne(array $data, array &$metadata = [])
     {
+        if (isset($data['metadata'])) {
+            $metadata = (array) $data['metadata'];
+        }
+
         if (! isset($data['data'])) {
             return null;
         }
@@ -53,8 +57,12 @@ abstract class BaseRepository implements ContainerAccessorInterface
         return $data['data'];
     }
 
-    public function parseMany(array $data)
+    public function parseMany(array $data, array &$metadata = [])
     {
+        if (isset($data['metadata'])) {
+            $metadata = (array) $data['metadata'];
+        }
+
         if (! isset($data['data'])) {
             return [];
         }
