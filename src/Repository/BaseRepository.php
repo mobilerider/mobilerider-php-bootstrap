@@ -116,6 +116,13 @@ abstract class BaseRepository implements ContainerAccessorInterface
         return $data ? $this->create($data) : $data;
     }
 
+    public function one($filters = [])
+    {
+        $filters['limit'] = 1;
+
+        return $this->all($filters);
+    }
+
     public function all($filters = [])
     {
         $data = $this->client->getData($this->getUri(), $filters);
