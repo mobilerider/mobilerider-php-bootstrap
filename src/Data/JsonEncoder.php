@@ -2,13 +2,11 @@
 
 namespace Mr\Bootstrap\Data;
 
+use Mr\Bootstrap\Interfaces\ArrayEncoder;
 
-
-use Mr\Bootstrap\Interfaces\DataTransformerInterface;
-
-class JsonTransformer implements DataTransformerInterface
+class JsonEncoder implements ArrayEncoder
 {
-    public function transform(array $data, $pretty = false)
+    public function encode(array $data, $pretty = false)
     {
         $options = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
 
@@ -22,7 +20,7 @@ class JsonTransformer implements DataTransformerInterface
         );
     }
 
-    public function toArray($stream)
+    public function decode($stream)
     {
         return \json_decode($stream, true);
     }

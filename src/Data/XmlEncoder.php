@@ -2,13 +2,14 @@
 
 namespace Mr\Bootstrap\Data;
 
+use Mr\Bootstrap\Interfaces\ArrayEncoder;
 
-
-use Mr\Bootstrap\Interfaces\DataTransformerInterface;
-
-class XmlTransformer implements DataTransformerInterface
+class XmlEncoder implements ArrayEncoder
 {
-    public function transform(array $data, $pretty = false)
+    /**
+     * @inheritdoc
+     */
+    public function encode(array $data, $pretty = false)
     {
         if (!$data) {
             return '';
@@ -20,7 +21,10 @@ class XmlTransformer implements DataTransformerInterface
         return $pretty ? prettifyXml($xml) : $xml->asXML();
     }
 
-    public function toArray($stream)
+    /**
+     * @inheritdoc
+     */
+    public function decode($stream)
     {
         return xml2arr($stream);
     }

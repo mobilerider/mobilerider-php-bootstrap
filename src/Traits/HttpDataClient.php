@@ -2,18 +2,18 @@
 
 namespace Mr\Bootstrap\Traits;
 
-use Mr\Bootstrap\Interfaces\DataTransformerInterface;
+use Mr\Bootstrap\Interfaces\ArrayEncoder;
 
 trait HttpDataClient
 {
     /**
-     * @var DataTransformerInterface
+     * @var ArrayEncoder
      */
-    protected $transformer;
+    protected $encoder;
 
-    public function setDataTransformer(DataTransformerInterface $transformer)
+    public function setDataEncoder(ArrayEncoder $encoder)
     {
-        $this->transformer = $transformer;
+        $this->encoder = $encoder;
     }
 
     public function requestData($method, $uri, array $options = [])
@@ -30,7 +30,7 @@ trait HttpDataClient
             return [];
         }
 
-        return $this->transformer ? $this->transformer->toArray($contents) : $contents;
+        return $this->encoder ? $this->encoder->decode($contents) : $contents;
     }
 
     public function getData($uri, array $params = [], array $options = [])

@@ -2,14 +2,14 @@
 
 namespace Mr\BootstrapTest\Traits;
 
-use Mr\Bootstrap\Data\JsonTransformer;
+use Mr\Bootstrap\Data\JsonEncoder;
 use PHPUnit\Framework\TestCase;
 
 
 class JsonTransfomerTest extends TestCase
 {
     /**
-     * @var JsonTransformer
+     * @var JsonEncoder
      */
     protected $instance;
 
@@ -27,25 +27,25 @@ class JsonTransfomerTest extends TestCase
 
     public function setUp()
     {
-        $this->instance = new JsonTransformer();
+        $this->instance = new JsonEncoder();
     }
 
-    public function testTransform()
+    public function testEncode()
     {
         // Do not escape slashes by default
         $expected = '{"name":"This is a name","settings":{"destination":{"uri":"http://localhost","auth":{"type":"basic"}}}}';
 
-        $json = $this->instance->transform($this->data);
+        $json = $this->instance->encode($this->data);
 
         $this->assertJson($json);
         $this->assertEquals($expected, $json);
     }
 
-    public function testToArray()
+    public function testDecode()
     {
         $stream = '{"name":"This is a name","settings":{"destination":{"uri":"http://localhost","auth":{"type":"basic"}}}}';
 
-        $result = $this->instance->toArray($stream);
+        $result = $this->instance->decode($stream);
 
         $this->assertInternalType('array', $result);
         $this->assertEquals($this->data, $result);
