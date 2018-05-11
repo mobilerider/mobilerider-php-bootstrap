@@ -141,11 +141,17 @@ abstract class BaseRepository implements ContainerAccessorInterface
         return $data ? $this->create($data) : $data;
     }
 
+    /**
+     * @param array $filters
+     * @return BaseModel|null
+     */
     public function one($filters = [])
     {
         $qb = $this->parseFilters($filters);
 
-        return $this->all($qb->limit(1));
+        $result = $this->all($qb->limit(1));
+
+        return $result ? $result[0] : null;
     }
 
     /**
