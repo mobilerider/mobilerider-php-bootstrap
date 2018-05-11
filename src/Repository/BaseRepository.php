@@ -132,7 +132,10 @@ abstract class BaseRepository implements ContainerAccessorInterface
 
     public function get($id, $modifiers = [])
     {
-        $data = $this->client->getData($this->getUri($id), $this->parseFilters($modifiers));
+        $data = $this->client->getData(
+            $this->getUri($id), $this->parseFilters($modifiers)->toArray()
+        );
+
         $data = $this->parseOne($data);
 
         return $data ? $this->create($data) : $data;
@@ -142,9 +145,7 @@ abstract class BaseRepository implements ContainerAccessorInterface
     {
         $qb = $this->parseFilters($filters);
 
-        $qb->limit(1);
-
-        return $this->all($filters);
+        return $this->all($qb->limit(1));
     }
 
     /**
@@ -153,7 +154,10 @@ abstract class BaseRepository implements ContainerAccessorInterface
      */
     public function all($filters = [])
     {
-        $data = $this->client->getData($this->getUri(), $this->parseFilters($filters));
+        $data = $this->client->getData(
+            $this->getUri(), $this->parseFilters($filters)->toArray()
+        );
+
         $data = $this->parseMany($data);
 
         return $data ? $this->buildModels($data) : $data;
