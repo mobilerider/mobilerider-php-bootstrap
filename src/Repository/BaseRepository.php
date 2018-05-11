@@ -2,8 +2,10 @@
 
 namespace Mr\Bootstrap\Repository;
 
+use Mr\Bootstrap\Http\Filtering\PrettusL5QueryBuilder;
 use Mr\Bootstrap\Interfaces\HttpDataClientInterface;
 use Mr\Bootstrap\Interfaces\ContainerAccessorInterface;
+use Mr\Bootstrap\Interfaces\QueryBuilderInterface;
 use Mr\Bootstrap\Model\BaseModel;
 use Mr\Bootstrap\Traits\ContainerAccessor;
 
@@ -13,11 +15,13 @@ abstract class BaseRepository implements ContainerAccessorInterface
 
     protected $client;
     protected $apiVersion;
+    protected $queryBuilderClass;
 
     public function __construct(HttpDataClientInterface $client, array $options = [])
     {
         $this->client = $client;
         $this->apiVersion = $options['api_version'] ?? '';
+        $this->queryBuilderClass = PrettusL5QueryBuilder::class;
     }
 
     /**
@@ -108,9 +112,27 @@ abstract class BaseRepository implements ContainerAccessorInterface
         return $models;
     }
 
+    /**
+     * @param array|QueryBuilderInterface $filters
+     * @return QueryBuilderInterface
+     */
+    protected function parseFilters($filters)
+    {
+        if ($filters instanceof QueryBuilderInterface) {
+            return $filters;
+        }
+
+        if (is_array($filters)) {
+            $class = $this->queryBuilderClass;
+            return new $class($filters);
+        }
+
+        throw new \RuntimeException('Invalid filters');
+    }
+
     public function get($id, $modifiers = [])
     {
-        $data = $this->client->getData($this->getUri($id), $modifiers);
+        $data = $this->client->getData($this->getUri($id), $this->parseFilters($modifiers));
         $data = $this->parseOne($data);
 
         return $data ? $this->create($data) : $data;
@@ -118,14 +140,20 @@ abstract class BaseRepository implements ContainerAccessorInterface
 
     public function one($filters = [])
     {
-        $filters['limit'] = 1;
+        $qb = $this->parseFilters($filters);
+
+        $qb->limit(1);
 
         return $this->all($filters);
     }
 
+    /**
+     * @param array|QueryBuilderInterface $filters
+     * @return array|mixed
+     */
     public function all($filters = [])
     {
-        $data = $this->client->getData($this->getUri(), $filters);
+        $data = $this->client->getData($this->getUri(), $this->parseFilters($filters));
         $data = $this->parseMany($data);
 
         return $data ? $this->buildModels($data) : $data;
