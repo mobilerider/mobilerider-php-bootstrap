@@ -47,7 +47,7 @@ abstract class BaseHttpService implements ContainerAccessorInterface
      */
     public function getRepository($name)
     {
-        return $this->_get($name, $this->_has($name) ? null : [
+        return $this->_get($name, [
             'client' => $this->client,
             'options' => [
                 'api_version' => $this->version
