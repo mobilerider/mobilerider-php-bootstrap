@@ -42,14 +42,14 @@ trait HttpDataClient
 
     public function postData($uri, array $data, array $options = [])
     {
-        $options['body'] = $this->transformer->transform($data);
+        $options['body'] = $this->encoder->encode($data);
 
         return $this->requestData('POST', $uri, $options);
     }
 
     public function putData($uri, array $data, array $options = [])
     {
-        $options['body'] = $this->transformer->transform($data);
+        $options['body'] = $this->encoder->encode($data);
 
         return $this->requestData('PUT', $uri, $options);
     }
