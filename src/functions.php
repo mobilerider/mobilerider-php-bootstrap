@@ -1,18 +1,30 @@
 <?php
 
-if (! function_exists('logger')) {
+if (! function_exists('mr_logger')) {
     /**
      * Return unique instance of Logger
+     * @param null $message
+     * @param string $level
+     * @param array $context
      * @return \Mr\Bootstrap\Utils\Logger
      */
-    function logger()
+    function mr_logger($message = null, $level = \Psr\Log\LogLevel::INFO, array $context = array())
     {
-        return \Mr\Bootstrap\Utils\Logger::getInstance();
+        /**
+         * @var \Mr\Bootstrap\Utils\Logger
+         */
+        $logger = \Mr\Bootstrap\Utils\Logger::getInstance();
+
+        if (! is_null($message)) {
+            $logger->log($level, $message, $context);
+        }
+
+        return $logger;
     }
 }
 
-if (! function_exists('plural')) {
-    function plural($s)
+if (! function_exists('mr_plural')) {
+    function mr_plural($s)
     {
         if (! $s) {
             return '';
@@ -26,46 +38,46 @@ if (! function_exists('plural')) {
     }
 }
 
-if (! function_exists('bool2str')) {
-    function bool2str($b)
+if (! function_exists('mr_bool2str')) {
+    function mr_bool2str($b)
     {
         return $b ? 'true' : 'false';
     }
 }
 
-if (! function_exists('str2bool')) {
-    function str2bool($s)
+if (! function_exists('mr_str2bool')) {
+    function mr_str2bool($s)
     {
         return $s == 'true';
     }
 }
 
-if (! function_exists('srvArg')) {
-    function srvArg($name)
+if (! function_exists('mr_srv_arg')) {
+    function mr_srv_arg($name)
     {
         return new \Mr\Bootstrap\ContainerServiceArg($name);
     }
 }
 
-if (! function_exists('xml2arr')) {
+if (! function_exists('mr_xml2arr')) {
     /**
      * @param string $stream XML
      * @return array
      */
-    function xml2arr($stream)
+    function mr_xml2arr($stream)
     {
         return json_decode(json_encode(new \SimpleXMLElement($stream)), true);
     }
 }
 
-if (! function_exists('arr2xml')) {
+if (! function_exists('mr_arr2xml')) {
     /**
      * Root node is ignored
      *
      * @param array $data
      * @return SimpleXMLElement
      */
-    function arr2xml(array $data)
+    function mr_arr2xml(array $data)
     {
         // Data needs to have a unique root string key
         $root = key($data);
@@ -111,8 +123,8 @@ if (! function_exists('arr2xml')) {
     }
 }
 
-if (! function_exists('prettifyXml')) {
-    function prettifyXml($xml)
+if (! function_exists('mr_prettify_xml')) {
+    function mr_prettify_xml($xml)
     {
         $dom = new DOMDocument('1.0');
         $dom->preserveWhiteSpace = false;
@@ -123,8 +135,8 @@ if (! function_exists('prettifyXml')) {
     }
 }
 
-if (! function_exists('dump')) {
-    function dump($value)
+if (! function_exists('mr_dump')) {
+    function mr_dump($value)
     {
         if (is_array($value)) {
             print_r($value);
@@ -134,18 +146,18 @@ if (! function_exists('dump')) {
     }
 }
 
-if (! function_exists('dd')) {
-    function dd($value)
+if (! function_exists('mr_dd')) {
+    function mr_dd($value)
     {
-        dump($value);
+        mr_dump($value);
 
         die(' -------- dump -------- ' . PHP_EOL);
     }
 }
 
 if (! function_exists('da')) {
-    function da(\Mr\Bootstrap\Interfaces\DataEntityInterface $obj)
+    function mr_da(\Mr\Bootstrap\Interfaces\DataEntityInterface $obj)
     {
-        dd($obj->toArray());
+        mr_dd($obj->toArray());
     }
 }

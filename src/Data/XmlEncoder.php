@@ -16,9 +16,9 @@ class XmlEncoder implements ArrayEncoder
         }
 
         // Important root node is ignored
-        $xml = arr2xml($data);
+        $xml = mr_arr2xml($data);
 
-        return $pretty ? prettifyXml($xml) : $xml->asXML();
+        return $pretty ? mr_prettify_xml($xml) : $xml->asXML();
     }
 
     /**
@@ -26,6 +26,6 @@ class XmlEncoder implements ArrayEncoder
      */
     public function decode($stream)
     {
-        return xml2arr($stream);
+        return mr_xml2arr($stream);
     }
 }

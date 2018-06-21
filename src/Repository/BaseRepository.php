@@ -38,7 +38,7 @@ abstract class BaseRepository implements ContainerAccessorInterface
 
     protected function getResourcePath()
     {
-        $path = plural($this->getResource());
+        $path = mr_plural($this->getResource());
 
         return $this->apiVersion ? "{$this->apiVersion}/$path" : $path;
     }
@@ -84,7 +84,7 @@ abstract class BaseRepository implements ContainerAccessorInterface
 
     public function createFromXml($stream)
     {
-        $data = xml2arr($stream);
+        $data = mr_xml2arr($stream);
 
         unset($data['@attributes']['href']);
         unset($data['id']);

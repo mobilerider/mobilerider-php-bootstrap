@@ -212,7 +212,7 @@ trait GetSet
 
     public function loadXml($xml)
     {
-        $this->fill(xml2arr($xml));
+        $this->fill(mr_xml2arr($xml));
     }
 
     public function asXml($pretty = false, $root = 'root')
@@ -221,13 +221,13 @@ trait GetSet
             return '';
         }
 
-        $xml = arr2xml([$root => $this->toArray()]);
+        $xml = mr_arr2xml([$root => $this->toArray()]);
 
-        return $pretty ? prettifyXml($xml) : $xml->asXML();
+        return $pretty ? mr_prettify_xml($xml) : $xml->asXML();
     }
 
     public function __dd()
     {
-        dd($this->toArray());
+        mr_dd($this->toArray());
     }
 }
