@@ -30,7 +30,7 @@ if (! function_exists('mr_plural')) {
             return '';
         }
 
-        if (ends_with($s, 'y')) {
+        if (lrv_ends_with($s, 'y')) {
             return substr($s, 0, -1) . 'ies';
         }
 

@@ -12,6 +12,12 @@
             "email": "michel@mobilerider.com"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/m1ch3lp3r3z/laravel-helpers.git"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "Mr\\Bootstrap\\": "src/",
@@ -26,7 +32,7 @@
     },
     "require": {
         "php": ">=7.0",
-        "rappasoft/laravel-helpers": "^1.0",
+        "m1ch3lp3r3z/laravel-helpers": "dev-master",
         "psr/log": "^1.0",
         "guzzlehttp/psr7": "^1.4",
         "guzzlehttp/promises": "^1.0"
