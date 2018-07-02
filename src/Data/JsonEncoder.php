@@ -6,9 +6,18 @@ use Mr\Bootstrap\Interfaces\ArrayEncoder;
 
 class JsonEncoder implements ArrayEncoder
 {
+    protected $options = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
+
+    public function __construct($options = null)
+    {
+        if (! is_null($options)) {
+            $this->options = $options;
+        }
+    }
+
     public function encode(array $data, $pretty = false)
     {
-        $options = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
+        $options = $this->options;
 
         if ($pretty) {
             $options = $options | JSON_PRETTY_PRINT;
@@ -22,6 +31,6 @@ class JsonEncoder implements ArrayEncoder
 
     public function decode($stream)
     {
-        return \json_decode($stream, true);
+        return \json_decode($stream, true, 256, $this->options);
     }
 }
