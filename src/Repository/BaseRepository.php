@@ -116,7 +116,7 @@ abstract class BaseRepository implements ContainerAccessorInterface
      * @param array|QueryBuilderInterface $filters
      * @return QueryBuilderInterface
      */
-    protected function parseFilters($filters)
+    public function resolveFilterQuery($filters)
     {
         if ($filters instanceof QueryBuilderInterface) {
             return $filters;
@@ -133,7 +133,7 @@ abstract class BaseRepository implements ContainerAccessorInterface
     public function get($id, $modifiers = [])
     {
         $data = $this->client->getData(
-            $this->getUri($id), $this->parseFilters($modifiers)->toArray()
+            $this->getUri($id), $this->resolveFilterQuery($modifiers)->toArray()
         );
 
         $data = $this->parseOne($data);
@@ -147,7 +147,7 @@ abstract class BaseRepository implements ContainerAccessorInterface
      */
     public function one($filters = [])
     {
-        $qb = $this->parseFilters($filters);
+        $qb = $this->resolveFilterQuery($filters);
 
         $result = $this->all($qb->limit(1));
 
@@ -161,7 +161,7 @@ abstract class BaseRepository implements ContainerAccessorInterface
     public function all($filters = [])
     {
         $data = $this->client->getData(
-            $this->getUri(), $this->parseFilters($filters)->toArray()
+            $this->getUri(), $this->resolveFilterQuery($filters)->toArray()
         );
 
         $data = $this->parseMany($data);

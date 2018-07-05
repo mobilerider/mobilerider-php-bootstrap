@@ -2,7 +2,7 @@
     "name": "mobilerider/mobilerider-php-bootstrap",
     "type": "library",
     "description": "Base classes and functions for MobileRider source code",
-    "version": "0.1.0-alpha.2",
+    "version": "0.1.0-alpha.3",
     "keywords": ["mobilerider"],
     "homepage": "http://www.mobilerider.com/",
     "license": "MIT",
