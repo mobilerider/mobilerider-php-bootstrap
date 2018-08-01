@@ -14,13 +14,11 @@ abstract class BaseRepository implements ContainerAccessorInterface
     use ContainerAccessor;
 
     protected $client;
-    protected $apiVersion;
     protected $queryBuilderClass;
 
     public function __construct(HttpDataClientInterface $client, array $options = [])
     {
         $this->client = $client;
-        $this->apiVersion = $options['api_version'] ?? '';
         $this->queryBuilderClass = PrettusL5QueryBuilder::class;
     }
 
@@ -38,9 +36,7 @@ abstract class BaseRepository implements ContainerAccessorInterface
 
     protected function getResourcePath()
     {
-        $path = mr_plural($this->getResource());
-
-        return $this->apiVersion ? "{$this->apiVersion}/$path" : $path;
+        return mr_plural($this->getResource());
     }
 
     public function getUri($id = null)
