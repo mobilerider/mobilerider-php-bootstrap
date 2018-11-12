@@ -2,6 +2,7 @@
 
 namespace Mr\Bootstrap\Repository;
 
+use Mr\Bootstrap\Factory;
 use Mr\Bootstrap\Http\Filtering\PrettusL5QueryBuilder;
 use Mr\Bootstrap\Interfaces\HttpDataClientInterface;
 use Mr\Bootstrap\Interfaces\ContainerAccessorInterface;
@@ -72,10 +73,14 @@ abstract class BaseRepository implements ContainerAccessorInterface
 
     public function create($data = [])
     {
-        return $this->_get($this->getModelClass(), [
-            'repository' => $this, // Important to pass current repository and avoid container creating new one
-            'data' => $data
-        ]);
+        return $this->_get(
+            $this->getModelClass(), [
+                // Important to pass current repository
+                // and avoid container creating new one
+                'repository' => $this,
+                'data' => $data
+            ]
+        );
     }
 
     public function createFromXml($stream)
@@ -114,19 +119,31 @@ abstract class BaseRepository implements ContainerAccessorInterface
      */
     public function resolveFilterQuery($filters)
     {
+        if (! $filters) {
+            return Factory::create($class = $this->queryBuilderClass);
+        }
+
         if ($filters instanceof QueryBuilderInterface) {
             return $filters;
         }
 
         if (is_array($filters)) {
-            $class = $this->queryBuilderClass;
-            return new $class($filters);
+            return Factory::create($class = $this->queryBuilderClass, [$filters]);
         }
 
         throw new \RuntimeException('Invalid filters');
     }
 
-    public function get($id, $modifiers = [])
+    /**
+     * Retrieve one item by given id 
+     * from remote api
+     *
+     * @param mixed $id
+     * @param array $modifiers
+     * 
+     * @return BaseModel|array|null
+     */
+    public function get($id, $modifiers = [], $asArray = false)
     {
         $data = $this->client->getData(
             $this->getUri($id), $this->resolveFilterQuery($modifiers)->toArray()
@@ -134,27 +151,39 @@ abstract class BaseRepository implements ContainerAccessorInterface
 
         $data = $this->parseOne($data);
 
-        return $data ? $this->create($data) : $data;
+        if (! $data) {
+            return null;
+        }
+
+        return $asArray ? $data : $this->create($data);
     }
 
     /**
+     * Retrieve one item by given filters
+     * from remote api
+     * 
      * @param array $filters
+     * 
      * @return BaseModel|null
      */
-    public function one($filters = [])
+    public function one($filters = [], $asArray = false)
     {
         $qb = $this->resolveFilterQuery($filters);
 
-        $result = $this->all($qb->limit(1));
+        $result = $this->all($qb->limit(1), $asArray);
 
         return $result ? $result[0] : null;
     }
 
     /**
+     * Retrieve all items by given filters
+     * from remote api
+     * 
      * @param array|QueryBuilderInterface $filters
+     * 
      * @return array|mixed
      */
-    public function all($filters = [])
+    public function all($filters = [], $asArray = false)
     {
         $data = $this->client->getData(
             $this->getUri(), $this->resolveFilterQuery($filters)->toArray()
@@ -162,7 +191,11 @@ abstract class BaseRepository implements ContainerAccessorInterface
 
         $data = $this->parseMany($data);
 
-        return $data ? $this->buildModels($data) : $data;
+        if (! $data) {
+            return [];
+        }
+
+        return $asArray ? $data : $this->buildModels($data);
     }
 
     public function persist(BaseModel $model)
