@@ -44,7 +44,7 @@ class Container
                 $single = true;
             } else {
                 $service = $this->create($definition, $args);
-                $single = isset($definition['single']) && (bool) $definition['single'];
+                $single = isset($definition['single']) && $definition['single'];
             }
 
             if ($single) {
