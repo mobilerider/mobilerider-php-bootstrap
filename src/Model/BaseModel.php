@@ -14,11 +14,16 @@ use Mr\Bootstrap\Traits\GetSet;
  */
 abstract class BaseModel implements ContainerAccessorInterface, DataEntityInterface
 {
+    const FIELD_ID = 'id';
+
     use GetSet {
+        get as protected traitGet;
         fill as protected traitFill;
         toArray as protected traitToArray;
     }
     use ContainerAccessor;
+
+    protected static $idFieldName = self::FIELD_ID;
 
     protected $repository;
     protected $fetched = false;
@@ -59,6 +64,20 @@ abstract class BaseModel implements ContainerAccessorInterface, DataEntityInterf
         if (! isset($this[$field])) {
             $this->$field = $default;
         }
+    }
+
+    public function id()
+    {
+        return $this->traitGet(static::$idFieldName);
+    }
+
+    public function get($name)
+    {
+        if ($name == 'id') {
+            return $this->id();
+        }
+
+        $this->traitGet($name);
     }
 
     public function getUri()

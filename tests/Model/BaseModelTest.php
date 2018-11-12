@@ -36,4 +36,33 @@ class BaseModelTest extends TestCase
 
         $this->assertEquals($data, $model->toArray());
     }
+
+    public function testDefaultId()
+    {
+        $data = [
+            'id' => rand(1, 100),
+            'name' => 'Test',
+            'email' => uniqid() . '@test.com'
+        ];
+
+        $model = new MockUser($this->userRepository, $data);
+
+        $this->assertEquals($data['id'], $model->id());
+        $this->assertEquals($data['id'], $model->id);
+    }
+
+    public function testEmailAsIdField()
+    {
+        $data = [
+            'name' => 'Test',
+            'email' => uniqid() . '@test.com'
+        ];
+
+        $model = new MockUser($this->userRepository, $data);
+
+        $model->useEmailAsIdField();
+
+        $this->assertEquals($data['email'], $model->id());
+        $this->assertEquals($data['email'], $model->id);
+    }
 }

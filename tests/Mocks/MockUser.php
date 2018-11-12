@@ -10,4 +10,9 @@ class MockUser extends BaseModel
     {
         return 'user';
     }
+
+    public static function useEmailAsIdField()
+    {
+        parent::$idFieldName = 'email';
+    }
 }
