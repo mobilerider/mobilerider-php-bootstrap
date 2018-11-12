@@ -41,7 +41,7 @@ class BaseModelTest extends TestCase
     {
         $data = [
             'id' => rand(1, 100),
-            'name' => 'Test',
+            'name' => 'MyName',
             'email' => uniqid() . '@test.com'
         ];
 
@@ -54,7 +54,7 @@ class BaseModelTest extends TestCase
     public function testEmailAsIdField()
     {
         $data = [
-            'name' => 'Test',
+            'name' => 'MyName',
             'email' => uniqid() . '@test.com'
         ];
 
@@ -64,5 +64,23 @@ class BaseModelTest extends TestCase
 
         $this->assertEquals($data['email'], $model->id());
         $this->assertEquals($data['email'], $model->id);
+    }
+
+    public function testGet()
+    {
+        $data = [
+            'name' => 'MyName',
+            'email' => uniqid() . '@test.com'
+        ];
+
+        $model = new MockUser($this->userRepository, $data);
+
+        $this->assertEquals($data['name'], $model->name);
+        $this->assertEquals($data['email'], $model->email);
+        $this->assertNull($model->unknown);
+
+        $this->assertEquals($data['name'], $model->get('name'));
+        $this->assertEquals($data['email'], $model->get('email'));
+        $this->assertNull($model->get('unknown'));
     }
 }

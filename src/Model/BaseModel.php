@@ -84,7 +84,7 @@ abstract class BaseModel implements ContainerAccessorInterface, DataEntityInterf
             return $this->id();
         }
 
-        $this->traitGet($name);
+        return $this->traitGet($name);
     }
 
     public function getUri()
