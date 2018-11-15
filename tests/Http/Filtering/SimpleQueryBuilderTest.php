@@ -8,6 +8,14 @@ use Mr\Bootstrap\Http\Filtering\SimpleQueryBuilder;
 
 class SimpleQueryBuilderTest extends TestCase
 {
+    public function testConstruct()
+    {   
+        $qb = new SimpleQueryBuilder();
+
+        $this->assertEquals([], $qb->toArray());
+        $this->assertEquals('', (string) $qb);
+    }
+
     public function testToArray()
     {
         $qb = new SimpleQueryBuilder(

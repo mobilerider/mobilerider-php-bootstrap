@@ -8,7 +8,7 @@ abstract class AbstractQueryBuilder implements QueryBuilderInterface
 {
     const OP_EQUAL = '=';
 
-    protected $filters;
+    protected $filters = [];
     protected $limit;
     protected $offset;
 
@@ -64,6 +64,10 @@ abstract class AbstractQueryBuilder implements QueryBuilderInterface
 
     public function __toString()
     {
+        if (! $this->filters) {
+            return '';
+        }
+
         return http_build_query($this->toArray());
     }
 }
