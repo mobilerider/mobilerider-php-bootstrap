@@ -37,7 +37,11 @@ class Container
     public function get($name, $args = [])
     {
         if (! $this->has($name)) {
-            $definition = $this->definitions[$name];
+            if (! isset($this->definitions[$name])) {
+                throw new \Exception('Container definition not found for ' . $name);
+            }
+
+            $definition = $this->definitions[$name];            
 
             if (isset($definition['instance'])) {
                 $service = $definition['instance'];
