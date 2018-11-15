@@ -20,7 +20,9 @@ abstract class BaseRepository implements ContainerAccessorInterface
     public function __construct(HttpDataClientInterface $client, array $options = [])
     {
         $this->client = $client;
-        $this->queryBuilderClass = PrettusL5QueryBuilder::class;
+
+        $this->queryBuilderClass = $options['queryBuilderClass'] 
+            ?? PrettusL5QueryBuilder::class;
     }
 
     /**
