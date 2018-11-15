@@ -28,4 +28,26 @@ class SimpleQueryBuilderTest extends TestCase
             $qb->toArray()
         );
     }
+
+    public function testToString()
+    {
+        $qb = new SimpleQueryBuilder(
+            [
+                ['name', 'John'],
+                ['email', 'john@gmail.com'],
+                ['first_name', 'like', '%john%']
+            ]
+        );
+
+        $this->assertEquals(
+            http_build_query(
+                [
+                    'name' => 'John',
+                    'email' => 'john@gmail.com',
+                    'first_name' => '%john%' 
+                ]
+            ),
+            (string) $qb
+        );
+    }
 }
