@@ -17,6 +17,14 @@ class SimpleQueryBuilder extends AbstractQueryBuilder
             $params[$f[0]] = $f[count($f) - 1];
         }
 
+        if ($this->limit) {
+            $params['limit'] = $this->limit;
+        }
+
+        if ($this->offset) {
+            $params['offset'] = $this->offset;
+        }
+
         return $params;
     }
 }
