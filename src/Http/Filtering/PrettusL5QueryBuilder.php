@@ -3,7 +3,7 @@
 namespace Mr\Bootstrap\Http\Filtering;
 
 
-class PrettusL5QueryBuilder extends AbstractQueryFilter
+class PrettusL5QueryBuilder extends AbstractQueryBuilder
 {
     public function toArray()
     {
@@ -15,11 +15,11 @@ class PrettusL5QueryBuilder extends AbstractQueryFilter
             $searchFields = [];
 
             $result['search'] = implode(';', array_map(function(array $filter) use (&$searchFields) {
-                if ($filter[1] != self::OP_EQUAL) {
+                if (count($filter) == 3 && $filter[1] != self::OP_EQUAL) {
                     $searchFields[] = "{$filter[0]}:{$filter[1]}";
                 }
 
-                return "{$filter[0]}:{$filter[2]}";
+                return "{$filter[0]}:{$filter[count($filter) - 1]}";
             }, $this->filters));
 
             if ($searchFields) {

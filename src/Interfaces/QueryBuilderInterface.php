@@ -10,7 +10,7 @@ interface QueryBuilderInterface
      * @param array $filters
      * @param array $pagination
      */
-    public function __construct(array $filters = [], array $pagination = []);
+    public function __construct(array $filters = [], $limit = null);
 
     /**
      * @param $field
@@ -18,9 +18,7 @@ interface QueryBuilderInterface
      * @param null $operator
      * @return static
      */
-    public function where($field, $value, $operator = null);
-
-    public function paginate(array $pagination);
+    public function where($field, $operator = null, $value = null);
 
     public function limit($limit, $offset = 0);
 
