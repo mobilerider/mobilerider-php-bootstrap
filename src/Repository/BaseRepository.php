@@ -42,9 +42,11 @@ abstract class BaseRepository implements ContainerAccessorInterface
         return mr_plural($this->getResource());
     }
 
-    public function getUri($id = null)
+    public function getUri($id = null, $path = '')
     {
-        return $id ? "{$this->getResourcePath()}/$id" : $this->getResourcePath();
+        $resource = $this->getResourcePath();
+        $result = $id ? "{$resource}/$id" : $resource;
+        return $path ? "$result/$path" : $result;
     }
 
     public function parseOne(array $data, array &$metadata = [])
