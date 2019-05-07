@@ -6,7 +6,9 @@ use Mr\Bootstrap\Interfaces\ArrayEncoder;
 
 class JsonEncoder implements ArrayEncoder
 {
-    protected $options = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
+    protected $options = JSON_UNESCAPED_UNICODE 
+        | JSON_UNESCAPED_SLASHES 
+        | JSON_BIGINT_AS_STRING;
 
     public function __construct($options = null)
     {
@@ -29,8 +31,8 @@ class JsonEncoder implements ArrayEncoder
         );
     }
 
-    public function decode($stream)
+    public function decode($stream, $asObject = false)
     {
-        return \json_decode($stream, true, 256, $this->options);
+        return \json_decode($stream, $asObject, 512, $this->options);
     }
 }
