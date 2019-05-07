@@ -33,6 +33,6 @@ class JsonEncoder implements ArrayEncoder
 
     public function decode($stream, $asObject = false)
     {
-        return \json_decode($stream, $asObject, 512, $this->options);
+        return \json_decode($stream, !$asObject, 512, $this->options);
     }
 }
