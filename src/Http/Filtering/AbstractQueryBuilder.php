@@ -20,7 +20,7 @@ abstract class AbstractQueryBuilder implements QueryBuilderInterface
         $this->where($filters);
         
         if ($limit) {
-            limit($limit);
+            $this->limit($limit);
         }
     }
 
