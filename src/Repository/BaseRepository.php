@@ -202,12 +202,16 @@ abstract class BaseRepository implements ContainerAccessorInterface
         return $asArray ? $data : $this->buildModels($data);
     }
 
-    public function persist(BaseModel $model)
+    public function persist(BaseModel $model, array $modifiers = [])
     {
         if ($model->isNew()) {
-            $data = $this->client->postData($this->getUri(), $model->toArray());
+            $data = $this->client->postData(
+                $this->getUri(), $model->toArray(), $modifiers
+            );
         } else {
-            $data = $this->client->putData($this->getUri($model->id), $model->toArray());
+            $data = $this->client->putData(
+                $this->getUri($model->id), $model->toArray(), $modifiers
+            );
         }
 
         $data = $this->parseOne($data);
