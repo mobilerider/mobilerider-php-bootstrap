@@ -19,8 +19,9 @@ trait HttpDataClient
     public function requestData($method, $uri, array $options = [])
     {
         $response = $this->{'request'}($method, $uri, $options);
+        $code = $response->getStatusCode();
 
-        if ($response->getStatusCode() != 200) {
+        if ($code < 200 || $code > 299) {
             throw new \RuntimeException(
                 'Request failed: ' . $response->getReasonPhrase()
             );
