@@ -49,6 +49,18 @@ abstract class BaseRepository implements ContainerAccessorInterface
         return $path ? "$result/$path" : $result;
     }
 
+    protected function getModelUri(BaseModel $model)
+    {
+        $resource = $this->getResourcePath();
+        $uri = $resource;
+
+        if ($model->isNew()) {
+            $uri .= "/{$model->id}";
+        }
+
+        return $uri;
+    }
+
     public function parseOne(array $data, array &$metadata = [])
     {
         if (isset($data['metadata'])) {
@@ -206,11 +218,11 @@ abstract class BaseRepository implements ContainerAccessorInterface
     {
         if ($model->isNew()) {
             $data = $this->client->postData(
-                $this->getUri(), $model->toArray(), $modifiers
+                $this->getModelUri($model), $model->toArray(), $modifiers
             );
         } else {
             $data = $this->client->putData(
-                $this->getUri($model->id), $model->toArray(), $modifiers
+                $this->getModelUri($model), $model->toArray(), $modifiers
             );
         }
 
