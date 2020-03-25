@@ -54,7 +54,7 @@ abstract class BaseRepository implements ContainerAccessorInterface
         $resource = $this->getResourcePath();
         $uri = $resource;
 
-        if ($model->isNew()) {
+        if (!$model->isNew()) {
             $uri .= "/{$model->id}";
         }
 
