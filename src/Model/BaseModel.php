@@ -73,9 +73,13 @@ abstract class BaseModel implements ContainerAccessorInterface, DataEntityInterf
         }
     }
 
-    public function id()
+    public function id($value = null)
     {
-        return $this->traitGet(static::$idFieldName);
+        if (is_null($value)) {
+            return $this->traitGet(static::$idFieldName);
+        }
+
+        return $this->set(static::$idFieldName, $value);
     }
 
     public function get($name)
