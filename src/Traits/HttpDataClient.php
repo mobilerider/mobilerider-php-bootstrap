@@ -18,6 +18,12 @@ trait HttpDataClient
 
     public function requestData($method, $uri, array $options = [])
     {
+        // Parse query parameters out of uri too
+        if (($qIndex = strpos($uri, "?")) !== false) {
+            $queryParts = \GuzzleHttp\Psr7\parse_query(substr($uri, $qIndex + 1));
+            $options['query'] = array_merge($options['query'], $queryParts);
+        }
+
         $response = $this->{'request'}($method, $uri, $options);
         $code = $response->getStatusCode();
 
