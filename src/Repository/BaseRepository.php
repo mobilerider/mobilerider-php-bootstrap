@@ -199,13 +199,13 @@ abstract class BaseRepository implements ContainerAccessorInterface
      * 
      * @return array|mixed
      */
-    public function all($filters = [], $asArray = false)
+    public function all($filters = [], $asArray = false, array &$metadata = [])
     {
         $data = $this->client->getData(
             $this->getUri(), $this->resolveFilterQuery($filters)->toArray()
         );
 
-        $data = $this->parseMany($data);
+        $data = $this->parseMany($data, $metadata);
 
         if (! $data) {
             return [];
