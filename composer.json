@@ -31,14 +31,12 @@
         }
     },
     "require": {
-        "php": ">=7.0",
+        "php": "^7.3|^8.0",
         "m1ch3lp3r3z/laravel-helpers": "dev-master",
         "psr/log": "^1.0",
-        "guzzlehttp/psr7": "^1.4",
-        "guzzlehttp/promises": "^1.0"
+        "guzzlehttp/guzzle": "^7.0.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.2",
-        "guzzlehttp/guzzle": "^6.3"
+        "phpunit/phpunit": "^6.2"
     }
 }
