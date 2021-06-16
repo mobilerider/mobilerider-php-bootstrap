@@ -20,7 +20,7 @@ trait HttpDataClient
     {
         // Parse query parameters out of uri too
         if (($qIndex = strpos($uri, "?")) !== false) {
-            $queryParts = \GuzzleHttp\Psr7\parse_query(substr($uri, $qIndex + 1));
+            $queryParts = parse_str(substr($uri, $qIndex + 1));
             $options['query'] = array_merge($options['query'], $queryParts);
         }
 
